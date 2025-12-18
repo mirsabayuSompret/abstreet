@@ -1,0 +1,26 @@
+{
+  "scenario_name": "minimal",
+  "people": [
+    {
+      "trips": [
+        {
+          "departure": 10000,
+          "origin": {
+            "Position": {
+              "longitude":110.375800,
+              "latitude":-7.776077
+            }
+          },
+          "destination": {
+            "Position": {
+             "longitude":110.375667,
+              "latitude":-7.772822
+        }
+          },
+          "mode": "Bike",
+          "purpose": "Meal"
+        }
+      ]
+    }
+  ]
+}

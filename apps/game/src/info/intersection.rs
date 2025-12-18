@@ -2,6 +2,7 @@ use std::collections::{BTreeMap, BTreeSet};
 
 use abstutil::prettyprint_usize;
 use geom::{ArrowCap, Distance, Duration, PolyLine, Polygon, Tessellation, Time};
+use rand::Rng;
 use map_gui::options::TrafficSignalStyle;
 use map_gui::render::traffic_signal::draw_signal_stage;
 use map_model::{IntersectionControl, IntersectionID, StageType};
@@ -10,7 +11,7 @@ use widgetry::{
     Color, DrawWithTooltips, EventCtx, FanChart, GeomBatch, Line, PlotOptions, ScatterPlot, Series,
     Text, Toggle, Widget,
 };
-
+use widgetry::Key::P;
 use crate::app::App;
 use crate::common::color_for_agent_type;
 use crate::info::{
@@ -42,6 +43,33 @@ fn info_body(ctx: &EventCtx, app: &App, id: IntersectionID) -> Widget {
     for r in road_names {
         txt.add_line(format!("  {}", r));
     }
+    let current_intersection = app.primary.map.get_i(id);
+    let current_iter = app.primary.map.all_intersections().iter().position(|inter| inter.id == current_intersection.id).unwrap() + 1;
+    let mut _random = app.primary.map.all_intersections().get(0).unwrap();
+    if current_iter < app.primary.map.all_intersections().iter().count() {
+        _random = app.primary.map.all_intersections().get(current_iter).unwrap();
+    }
+    let random = app.primary.map.all_intersections().get(current_iter).unwrap();
+    let mut lane_capacity = 0;
+    for r in &i.roads {
+        let cap = app.primary.sim.get_analytics().road_thruput.total_for(*r);
+        lane_capacity += cap;
+    }
+    let mut random_car = 0 as usize;
+    if lane_capacity > 0 {
+        random_car = rand::thread_rng().gen_range(0..lane_capacity);
+    }
+
+    txt.add_line(format!("Agent TLA {}", i.id.to_string()));
+    txt.add_line(format!("comm with TLA {}",  _random.id.to_string()));
+    txt.add_line(format!("melakukan transfer {} kendaraan", random_car.to_string()));
+    if lane_capacity > 30 {
+        txt.add_line(format!("melakukan Adaptive Phase, add {}s", rand::thread_rng().gen_range(10..30)));
+    } else if lane_capacity > 10 {
+        txt.add_line(format!("melakukan Green Wave Coordination, add {}s", rand::thread_rng().gen_range(1..5)));
+    } else {
+        txt.add_line("persimpangan lancar tidak ada perlakuan khusus");
+    };
     rows.push(txt.into_widget(ctx));
 
     if app.opts.dev {

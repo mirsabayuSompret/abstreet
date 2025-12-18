@@ -36,49 +36,7 @@ impl<A: AppLike + 'static> TitleScreen<A> {
                 .into_widget(ctx),
             Widget::row(vec![
                 Widget::col(vec![
-                    Line("Games").small_heading().into_widget(ctx),
-                    Widget::row(vec![
-                        Image::from_path("system/assets/pregame/tutorial.svg")
-                            .untinted()
-                            .dims(100.0)
-                            .into_widget(ctx),
-                        ctx.style()
-                            .btn_outline
-                            .text("Traffic simulation tutorial")
-                            .hotkey(Key::T)
-                            .disabled(true)
-                            .disabled_tooltip("Tutorial mode currently unmaintained, sorry")
-                            .build_def(ctx)
-                            .centered_vert(),
-                    ]),
-                    Widget::row(vec![
-                        Image::from_path("system/assets/pregame/challenges.svg")
-                            .untinted()
-                            .dims(100.0)
-                            .into_widget(ctx),
-                        ctx.style()
-                            .btn_outline
-                            .text("Traffic simulation challenges")
-                            .tooltip("Complete specific objectives in the traffic simulator")
-                            .build_def(ctx)
-                            .centered_vert(),
-                    ]),
-                    Widget::row(vec![
-                        Image::from_path("system/assets/santa/bike1.svg")
-                            .untinted()
-                            .dims(100.0)
-                            .into_widget(ctx),
-                        ctx.style()
-                            .btn_outline
-                            .text("15-minute Santa")
-                            .tooltip("Deliver presents as efficiently as possible")
-                            .build_def(ctx)
-                            .centered_vert(),
-                    ]),
-                ])
-                .section(ctx),
-                Widget::col(vec![
-                    Line("Planning").small_heading().into_widget(ctx),
+                    Line("Proyek AI Agentic: Manajemen Transportasi Perkotaan (Yogyakarta)").small_heading().into_widget(ctx),
                     Widget::row(vec![
                         Image::from_path("system/assets/pregame/sandbox.svg")
                             .untinted()
@@ -86,39 +44,39 @@ impl<A: AppLike + 'static> TitleScreen<A> {
                             .into_widget(ctx),
                         ctx.style()
                             .btn_outline
-                            .text("Traffic simulation sandbox")
+                            .text("multi_agent")
                             .hotkey(Key::S)
                             .tooltip("Simulate traffic, edit streets, measure effects")
                             .build_def(ctx)
                             .centered_vert(),
                     ]),
-                    Widget::row(vec![
-                        Image::from_path("system/assets/edit/bike.svg")
-                            .color(RewriteColor::ChangeAll(app.cs().bike_trip))
-                            .dims(100.0)
-                            .into_widget(ctx),
-                        ctx.style()
-                            .btn_outline
-                            .text("Ungap the Map")
-                            .tooltip("Improve a city's bike network")
-                            .build_def(ctx)
-                            .centered_vert(),
-                    ]),
-                    ctx.style()
-                        .btn_outline
-                        .text("15-minute neighborhoods")
-                        .tooltip("Explore what places residents can easily reach")
-                        .build_def(ctx),
-                    ctx.style()
-                        .btn_outline
-                        .text("Low traffic neighborhoods")
-                        .tooltip("Reduce vehicle shortcuts through residential streets")
-                        .build_def(ctx),
-                    ctx.style()
-                        .btn_outline
-                        .text("ActDev")
-                        .tooltip("Explore mobility patterns around new residential development")
-                        .build_def(ctx),
+                    // Widget::row(vec![
+                    //     Image::from_path("system/assets/edit/bike.svg")
+                    //         .color(RewriteColor::ChangeAll(app.cs().bike_trip))
+                    //         .dims(100.0)
+                    //         .into_widget(ctx),
+                    //     ctx.style()
+                    //         .btn_outline
+                    //         .text("Ungap the Map")
+                    //         .tooltip("Improve a city's bike network")
+                    //         .build_def(ctx)
+                    //         .centered_vert(),
+                    // ]),
+                    // ctx.style()
+                    //     .btn_outline
+                    //     .text("15-minute neighborhoods")
+                    //     .tooltip("Explore what places residents can easily reach")
+                    //     .build_def(ctx),
+                    // ctx.style()
+                    //     .btn_outline
+                    //     .text("Low traffic neighborhoods")
+                    //     .tooltip("Reduce vehicle shortcuts through residential streets")
+                    //     .build_def(ctx),
+                    // ctx.style()
+                    //     .btn_outline
+                    //     .text("ActDev")
+                    //     .tooltip("Explore mobility patterns around new residential development")
+                    //     .build_def(ctx),
                 ])
                 .section(ctx),
                 Widget::col(vec![
@@ -285,7 +243,7 @@ impl<A: AppLike + 'static> SimpleState<A> for TitleScreen<A> {
                 self.run(ctx, app, Executable::ABStreet, vec!["--challenges"])
             }
             "15-minute Santa" => self.run(ctx, app, Executable::Santa, vec![]),
-            "Traffic simulation sandbox" => {
+            "multi_agent" => {
                 self.run(ctx, app, Executable::ABStreet, vec!["--sandbox"])
             }
             "Community proposals" => self.run(ctx, app, Executable::ABStreet, vec!["--proposals"]),

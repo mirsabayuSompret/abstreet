@@ -157,7 +157,7 @@ impl Scenario {
             }
         }
         // Dynamically generated -- arguably this is an absence of a default scenario
-        "home_to_work".to_string()
+        "random".to_string()
     }
 }
 

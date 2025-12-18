@@ -204,7 +204,7 @@ fn make_agent_toggles(ctx: &mut EventCtx, app: &App, is_enabled: [bool; 4]) -> V
             ))
             .secondary(),
             Line(format!(
-                "To/from a bike: {}",
+                "To/from a motorcycle: {}",
                 prettyprint_usize(counts.walking_to_from_bike)
             ))
             .secondary(),
@@ -219,7 +219,7 @@ fn make_agent_toggles(ctx: &mut EventCtx, app: &App, is_enabled: [bool; 4]) -> V
 
         colored_checkbox(
             ctx,
-            "Walk",
+            "Jalan Kaki",
             is_pedestrian_enabled,
             app.cs.unzoomed_pedestrian,
             "system/assets/meters/pedestrian.svg",
@@ -230,7 +230,7 @@ fn make_agent_toggles(ctx: &mut EventCtx, app: &App, is_enabled: [bool; 4]) -> V
 
     let bike_details = {
         let tooltip = Text::from_multiline(vec![
-            Line("Cyclists"),
+            Line("Motorcycle"),
             Line(prettyprint_usize(counts.cyclists)).secondary(),
         ]);
 
@@ -267,7 +267,7 @@ fn make_agent_toggles(ctx: &mut EventCtx, app: &App, is_enabled: [bool; 4]) -> V
 
     let bus_details = {
         let tooltip = Text::from_multiline(vec![
-            Line("Public transit"),
+            Line("Bus"),
             Line(format!(
                 "{} passengers on {} buses",
                 prettyprint_usize(counts.bus_riders),

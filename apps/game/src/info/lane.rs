@@ -1,3 +1,8 @@
+use std::any::Any;
+use std::ptr::{null, null_mut};
+use geom::HgramValue;
+use rand::{random, Rng};
+use rand::prelude::SliceRandom;
 use abstutil::prettyprint_usize;
 use map_model::{LaneID, PathConstraints};
 use widgetry::{EventCtx, Line, LinePlot, PlotOptions, Series, Text, TextExt, Widget};
@@ -54,6 +59,17 @@ fn info_body(ctx: &EventCtx, app: &App, id: LaneID) -> Widget {
 
     kv.push(("Length", l.length().to_string(&app.opts.units)));
 
+    let total_vehicle = app.primary.sim.get_analytics().road_thruput.total_for(id.road);
+    let edge_weight = total_vehicle as f64 * l.length().to_miles();
+    kv.push(("Kepadatan", edge_weight.to_string()));
+    let mut intersection_to_serve = app.primary.map.all_intersections().get(0).unwrap();
+    for intersection in app.primary.map.all_intersections() {
+        if intersection.roads.contains(&id.road){
+            intersection_to_serve = intersection;
+            break;
+        }
+    }
+    kv.push(("communicate with TLA :", intersection_to_serve.id.to_string()));
     rows.extend(make_table(ctx, kv));
 
     if l.is_parking() {

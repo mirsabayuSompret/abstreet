@@ -4,7 +4,7 @@
 use std::collections::BTreeSet;
 
 use rand::seq::SliceRandom;
-use rand::Rng;
+use rand::{random, Rng};
 use rand_xorshift::XorShiftRng;
 use serde::{Deserialize, Serialize};
 
@@ -45,6 +45,7 @@ pub struct BorderSpawnOverTime {
     pub num_peds: usize,
     pub num_cars: usize,
     pub num_bikes: usize,
+    pub num_buses:usize,
     pub percent_use_transit: f64,
     // TODO use https://docs.rs/rand/0.5.5/rand/distributions/struct.Normal.html
     pub start_time: Time,
@@ -86,6 +87,9 @@ impl ScenarioGenerator {
             for _ in 0..s.num_bikes {
                 s.spawn(rng, &mut scenario, TripMode::Bike, map);
             }
+            for _ in 0..s.num_buses{
+                s.spawn(rng, &mut scenario, TripMode::Transit, map);
+            }
         }
 
         timer.stop(format!("Generating scenario {}", self.scenario_name));
@@ -97,7 +101,7 @@ impl ScenarioGenerator {
             scenario_name: "small_run".to_string(),
             only_seed_buses: None,
             spawn_over_time: vec![SpawnOverTime {
-                num_agents: 100,
+                num_agents: 10000,
                 start_time: Time::START_OF_DAY,
                 stop_time: Time::START_OF_DAY + Duration::seconds(5.0),
                 goal: None,
@@ -112,13 +116,14 @@ impl ScenarioGenerator {
                 .into_iter()
                 .map(|i| BorderSpawnOverTime {
                     num_peds: 10,
-                    num_cars: 10,
-                    num_bikes: 10,
+                    num_cars: 850,
+                    num_bikes: 1200,
+                    num_buses : 120,
                     start_time: Time::START_OF_DAY,
                     stop_time: Time::START_OF_DAY + Duration::seconds(5.0),
                     start_from_border: i.id,
                     goal: None,
-                    percent_use_transit: 0.5,
+                    percent_use_transit: 0.0,
                 })
                 .collect(),
         };
@@ -179,12 +184,16 @@ impl SpawnOverTime {
 impl BorderSpawnOverTime {
     fn spawn(&self, rng: &mut XorShiftRng, scenario: &mut Scenario, mode: TripMode, map: &Map) {
         let depart = rand_time(rng, self.start_time, self.stop_time);
+        let trip_list = [TripPurpose::School, TripPurpose::Home, TripPurpose::Medical, TripPurpose::ParkAndRideTransfer, TripPurpose::Escort, TripPurpose::Meal, TripPurpose::PersonalBusiness, TripPurpose::Recreation, TripPurpose::Shopping, TripPurpose::Social, TripPurpose::Work];
+        let random_trip = trip_list.choose(& mut rand::thread_rng()).unwrap();
+        let random_road  = map.all_intersections().choose(& mut rand::thread_rng()).unwrap();
+
         scenario.people.push(PersonSpec {
             orig_id: None,
             trips: vec![IndividTrip::new(
                 depart,
-                TripPurpose::Shopping,
-                TripEndpoint::Border(self.start_from_border),
+                *random_trip,
+                TripEndpoint::Border(random_road.id),
                 self.goal.unwrap_or_else(|| {
                     TripEndpoint::Building(map.all_buildings().choose(rng).unwrap().id)
                 }),

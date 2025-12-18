@@ -674,6 +674,7 @@ fn make_bike_lane_scenario(map: &Map) -> ScenarioGenerator {
         num_peds: 0,
         num_cars: 10,
         num_bikes: 10,
+        num_buses: 0,
         percent_use_transit: 0.0,
         start_time: Time::START_OF_DAY,
         stop_time: Time::START_OF_DAY + Duration::seconds(10.0),

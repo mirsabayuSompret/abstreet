@@ -4,7 +4,8 @@ use maplit::btreemap;
 
 use crate::ID;
 use geom::{Distance, Duration, Percent, Polygon, Pt2D, UnitFmt};
-use map_model::{Map, Path, PathStep, Traversable};
+use rand::Rng;
+use map_model::{Lane, Map, Path, PathStep, Traversable};
 use sim::{AgentID, Analytics, PersonID, Problem, TripID, TripInfo, TripPhase, TripPhaseType};
 use synthpop::{TripEndpoint, TripMode};
 use widgetry::{
@@ -128,6 +129,16 @@ pub fn ongoing(
             Widget::custom_row(vec![Line("Purpose").secondary().into_widget(ctx)])
                 .force_width_window_pct(ctx, col_width),
             Line(trip.purpose.to_string()).secondary().into_widget(ctx),
+        ]));
+    }
+    {
+        let random_rsa_index = rand::thread_rng().gen_range(0..20);
+        let lanes = app.primary.map.all_lanes().into_iter().collect::<Vec<_>>();
+        let random_rsa = lanes.get(random_rsa_index).unwrap();
+        col.push(Widget::custom_row(vec![
+            Widget::custom_row(vec![Line("RSA Agent").secondary().into_widget(ctx)])
+                .force_width_window_pct(ctx, col_width),
+            Line(random_rsa.id.to_string()).secondary().into_widget(ctx),
         ]));
     }
 
