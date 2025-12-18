@@ -30,7 +30,7 @@ impl<A: AppLike + 'static> TitleScreen<A> {
         enter_state: Box<dyn Fn(&mut EventCtx, &mut A, Vec<&str>) -> Box<dyn State<A>>>,
     ) -> Box<dyn State<A>> {
         let panel = Panel::new_builder(Widget::col(vec![
-            Image::from_path("system/assets/pregame/logo.svg")
+            Image::from_path("system/assets/pregame/ugm.svg")
                 .untinted()
                 .dims(150.0)
                 .into_widget(ctx),
@@ -97,7 +97,7 @@ impl<A: AppLike + 'static> TitleScreen<A> {
             Widget::col(vec![
                 ctx.style()
                     .btn_outline
-                    .text("Created by Dustin Carlino, Yuwen Li, & Michael Kirk")
+                    .text("Created by Dustin Carlino, Yuwen Li, & Michael Kirk, modified by Mirsabayu for ACE project")
                     .build_widget(ctx, "Credits"),
                 built_info::maybe_update(ctx),
             ])
